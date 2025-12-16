@@ -57,10 +57,13 @@ class Settings(BaseSettings):
     
     # AI/ML
     VISION_MODEL_NAME: str = "openai/clip-vit-base-patch32"
-    TEXT_MODEL_NAME: str = "sentence-transformers/all-MiniLM-L6-v2"
+    TEXT_MODEL_NAME: str = "all-MiniLM-L6-v2"  # sentence-transformers model
     EMBEDDING_DIMENSION: int = 512
     EMBEDDING_RETRY_ATTEMPTS: int = 3
     EMBEDDING_RETRY_BACKOFF_SEC: int = 1
+    USE_OLLAMA: bool = False  # Set to True to use Ollama for vision (e.g., SmolVLM)
+    OLLAMA_MODEL: str = "smolvlm"  # Ollama model name if USE_OLLAMA is True
+    OLLAMA_URL: str = "http://localhost:11434"  # Ollama API endpoint
     
     # Recommendation
     INTERACTION_LOOKBACK_DAYS: int = 30

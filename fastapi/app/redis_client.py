@@ -2,7 +2,8 @@
 Redis client for caching and task queue management
 """
 
-import redis.asyncio as redis
+import redis.asyncio as aioredis
+import redis
 from typing import Optional
 from app.config import settings
 import json
@@ -120,3 +121,12 @@ redis_client = RedisClient()
 async def get_redis() -> RedisClient:
     """Dependency for getting Redis client"""
     return redis_client
+
+
+def get_sync_redis() -> redis.Redis:
+    """Get synchronous Redis client for upload manager"""
+    return redis.from_url(
+        settings.REDIS_URL,
+        max_connections=settings.REDIS_MAX_CONNECTIONS,
+        decode_responses=True
+    )

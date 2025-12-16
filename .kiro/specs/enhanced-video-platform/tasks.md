@@ -18,7 +18,9 @@
   - Test default values
   - _Requirements: 10.1_
 
-- [-] 2. Implement core data models and database schema
+- [x] 2. Implement core data models and database schema
+
+
 
 
 
@@ -42,7 +44,11 @@
   - Test Activity JSON serialization
   - _Requirements: 1.8_
 
-- [ ] 3. Implement upload manager and validation
+- [x] 3. Implement upload manager and validation
+
+
+
+
   - Create UploadManager class (services/upload_manager.py)
   - Implement video format validation (MP4, WebM, MOV)
   - Implement file size validation (500MB limit)
@@ -73,7 +79,10 @@
   - **Property 7: Upload completion persistence**
   - **Validates: Requirements 1.8**
 
-- [ ] 4. Implement media worker for video processing
+- [x] 4. Implement media worker for video processing
+
+
+
   - Create MediaWorker class (workers/media.py)
   - Set up task queue with Redis and Celery/RQ
   - Implement FFmpeg wrapper for video transcoding
@@ -110,7 +119,11 @@
   - Test corrupted video handling
   - _Requirements: 2.8_
 
-- [ ] 5. Implement AI embedding service
+- [x] 5. Implement AI embedding service
+
+
+
+
   - Create EmbeddingService class (ai/embeddings.py)
   - Integrate pre-trained vision model (CLIP or VideoMAE) for visual features
   - Implement video frame sampling and feature extraction
@@ -139,7 +152,10 @@
   - **Property 17: Embedding retry behavior**
   - **Validates: Requirements 3.8**
 
-- [ ] 6. Implement recommendation engine
+- [x] 6. Implement recommendation engine
+
+
+
   - Create RecommendationEngine class (ai/recsys.py)
   - Implement user interaction history retrieval (30-day lookback)
   - Implement user preference embedding computation (average of liked videos)
@@ -176,10 +192,17 @@
   - **Property 23: Feed pagination consistency**
   - **Validates: Requirements 4.7**
 
-- [ ] 7. Checkpoint - Ensure all tests pass
+- [x] 7. Checkpoint - Ensure all tests pass
+
+
+
+
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 8. Implement ActivityPub service
+- [x] 8. Implement ActivityPub service
+
+
+
   - Create ActivityPubService class (federation/activitypub.py)
   - Implement ActivityPub object creation for Video Posts
   - Implement Create activity generation with all required fields
@@ -207,7 +230,12 @@
   - Test malformed activity rejection
   - _Requirements: 6.3_
 
-- [ ] 9. Implement outbox handler for federation publishing
+- [x] 9. Implement outbox handler for federation publishing
+
+
+
+
+
   - Create OutboxHandler class (federation/outbox.py)
   - Implement follower inbox endpoint retrieval
   - Implement delivery task creation and enqueueing
@@ -232,7 +260,8 @@
   - Test 5xx retry logic
   - _Requirements: 5.8_
 
-- [ ] 10. Implement inbox handler for federation receiving
+- [-] 10. Implement inbox handler for federation receiving
+
   - Create InboxHandler class (federation/inbox.py)
   - Implement HTTP Signature verification on incoming requests
   - Implement 401 rejection for invalid signatures

@@ -92,12 +92,15 @@ async def health_check():
     }
 
 
-# Import and include routers (will be added as we implement them)
-# from app.routers import posts, users, feed, federation
-# app.include_router(posts.router, prefix="/api/posts", tags=["posts"])
-# app.include_router(users.router, prefix="/api/users", tags=["users"])
-# app.include_router(feed.router, prefix="/api/feed", tags=["feed"])
-# app.include_router(federation.router, prefix="/api/federation", tags=["federation"])
+# Import and include routers
+from app.routers import posts
+app.include_router(posts.router)
+
+# Additional routers will be added as we implement them
+# from app.routers import users, feed, federation
+# app.include_router(users.router)
+# app.include_router(feed.router)
+# app.include_router(federation.router)
 
 
 if __name__ == "__main__":
