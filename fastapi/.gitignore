@@ -60,5 +60,6 @@ htmlcov/
 Thumbs.db
 
 # Alembic
-alembic/versions/*.py
+# Keep migration files in version control
+# alembic/versions/*.py
 !alembic/versions/.gitkeep

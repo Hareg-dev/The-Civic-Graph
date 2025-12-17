@@ -1,196 +1,110 @@
 # FreeWill Video Platform
 
-A federated short-form video sharing platform with ActivityPub support, AI-powered recommendations, and decentralized identity.
+A decentralized video platform with ActivityPub federation, AI recommendations, and content moderation.
 
-## Features
+## Quick Start
 
-- **Video Upload & Processing**: Upload videos with automatic transcoding to multiple resolutions
-- **AI-Powered Recommendations**: Personalized feed using vector similarity search
-- **ActivityPub Federation**: Share and discover content across federated instances
-- **Decentralized Identity**: Portable user profiles with DID support
-- **Content Moderation**: Automated and manual content moderation tools
-
-## Architecture
-
-```
-FastAPI Application
-├── API Layer (Routers)
-├── Service Layer (Business Logic)
-├── Background Workers (Video Processing, AI, Federation)
-└── Data Layer (PostgreSQL, Redis, Qdrant)
-```
-
-## Prerequisites
-
-- Python 3.10+
-- PostgreSQL 14+
-- Redis 7+
-- Qdrant 1.7+
-- FFmpeg 5+
-
-## Installation
-
-1. Clone the repository:
+### Development
 ```bash
-git clone <repository-url>
-cd fastapi
+# Start all services
+./scripts/start_services.sh  # Linux/Mac
+scripts\start_services.bat   # Windows
+
+# Access at http://localhost:8000
+# API docs at http://localhost:8000/docs
 ```
 
-2. Create virtual environment:
+### Production
 ```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+# Start production stack
+./scripts/start_production.sh  # Linux/Mac
+scripts\start_production.bat   # Windows
+
+# Access at http://localhost
 ```
 
-3. Install dependencies:
+### Deploy to Internet (ngrok)
 ```bash
-pip install -r requirements.txt
-```
+# Windows
+scripts\setup_ngrok_simple.bat
+scripts\deploy_with_ngrok_direct.bat
 
-4. Set up environment variables:
-```bash
-cp .env.example .env
-# Edit .env with your configuration
-```
-
-5. Initialize database:
-```bash
-alembic upgrade head
-```
-
-## Running the Application
-
-### Development Mode
-
-```bash
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-```
-
-### Production Mode
-
-```bash
-uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
-```
-
-### With Docker Compose
-
-```bash
-docker-compose up -d
-```
-
-## Running Workers
-
-Start background workers for video processing:
-
-```bash
-celery -A app.workers.tasks worker --loglevel=info
-```
-
-## API Documentation
-
-Once running, visit:
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
-
-## Testing
-
-Run tests:
-```bash
-pytest
-```
-
-Run with coverage:
-```bash
-pytest --cov=app --cov-report=html
-```
-
-Run property-based tests:
-```bash
-pytest -m property
+# Linux/Mac
+./scripts/deploy_with_ngrok.sh
 ```
 
 ## Project Structure
 
 ```
 fastapi/
-├── app/
-│   ├── main.py              # Application entry point
-│   ├── config.py            # Configuration management
-│   ├── db.py                # Database connection
-│   ├── models.py            # SQLAlchemy models
-│   ├── redis_client.py      # Redis client
-│   ├── ai/
-│   │   ├── embeddings.py    # Video embedding generation
-│   │   ├── qdrant_client.py # Vector database client
-│   │   └── recsys.py        # Recommendation engine
-│   ├── federation/
-│   │   ├── activitypub.py   # ActivityPub protocol
-│   │   ├── inbox.py         # Inbox handler
-│   │   └── outbox.py        # Outbox handler
-│   ├── workers/
-│   │   ├── media.py         # Video processing worker
-│   │   └── tasks.py         # Task definitions
-│   ├── services/
-│   │   ├── upload_manager.py # Upload management
-│   │   ├── identity.py       # DID management
-│   │   └── moderation.py     # Content moderation
-│   └── routers/
-│       ├── posts.py         # Post endpoints
-│       ├── users.py         # User endpoints
-│       ├── feed.py          # Feed endpoints
-│       └── federation.py    # Federation endpoints
-├── alembic/                 # Database migrations
-├── tests/                   # Test suite
-├── requirements.txt         # Python dependencies
-└── README.md               # This file
+├── app/              # Application code
+│   ├── routers/      # API endpoints
+│   ├── services/     # Business logic
+│   ├── workers/      # Background tasks
+│   ├── ai/           # AI/ML components
+│   └── federation/   # ActivityPub
+├── scripts/          # Deployment & utility scripts
+├── tests/            # Test files
+├── docs/             # Documentation
+├── alembic/          # Database migrations
+└── docker-compose.yml
 ```
 
-## Configuration
+## Documentation
 
-Key configuration options in `.env`:
+- [Getting Started](docs/GETTING_STARTED.md) - Complete setup guide
+- [Production Deployment](docs/PRODUCTION_DEPLOYMENT.md) - Production setup
+- [ngrok Quick Start](docs/NGROK_QUICK_START.md) - Internet testing
 
-- `DATABASE_URL`: PostgreSQL connection string
-- `REDIS_URL`: Redis connection string
-- `QDRANT_URL`: Qdrant vector database URL
-- `INSTANCE_URL`: Public URL of this instance
-- `SECRET_KEY`: Secret key for JWT tokens
-- `MAX_UPLOAD_SIZE_MB`: Maximum video file size (default: 500MB)
-- `MAX_VIDEO_DURATION_SEC`: Maximum video duration (default: 180s)
-
-## Federation
-
-This platform implements ActivityPub for federation with other instances. To federate:
-
-1. Ensure `INSTANCE_URL` is set to your public URL
-2. Configure HTTPS (required for federation)
-3. Other instances can follow users at: `https://your-instance.com/users/{username}`
-
-## Development
-
-### Adding New Features
-
-1. Create spec in `.kiro/specs/`
-2. Implement according to task list
-3. Write tests (unit + property-based)
-4. Update documentation
-
-### Code Style
+## Testing
 
 ```bash
-# Format code
-black app/
+# System tests
+python tests/test_system.py
 
-# Lint
-flake8 app/
+# Production tests
+python tests/test_production.py
 
-# Type check
-mypy app/
+# ngrok deployment tests
+python tests/test_ngrok_deployment.py
 ```
 
-## License
+## Key Features
 
-[Your License Here]
+- 🎥 Video upload and multi-resolution transcoding
+- 🤖 AI-powered recommendations
+- 🌐 ActivityPub federation
+- 🔐 Decentralized identity (DID)
+- 🛡️ Content moderation
+- 📊 Comprehensive monitoring
 
-## Contributing
+## Tech Stack
 
-[Contributing Guidelines]
+- **Backend**: FastAPI, Python 3.11+
+- **Database**: PostgreSQL
+- **Cache**: Redis
+- **Vector DB**: Qdrant
+- **Queue**: Celery
+- **Web Server**: Nginx (production)
+- **Container**: Docker
+
+## Environment Setup
+
+Copy `.env.example` to `.env` and configure:
+
+```bash
+cp .env.example .env
+# Edit .env with your settings
+```
+
+## Health Check
+
+```bash
+curl http://localhost:8000/health
+```
+
+## Support
+
+- Check service status: `python scripts/check_status.py`
+- View logs: `docker-compose logs -f`
+- Stop services: `docker-compose down`

@@ -20,9 +20,7 @@ qdrant-client==1.16.1
 # Video processing
 ffmpeg-python==0.2.0
 
-# AI/ML
-torch==2.1.0
-torchvision==0.16.0
+# AI/ML (lightweight - no torch)
 transformers==4.35.2
 sentence-transformers==2.2.2
 numpy==1.24.3

@@ -11,11 +11,15 @@ from app.config import settings, create_directories
 from app.db import init_db
 from app.redis_client import redis_client
 from app.ai.qdrant_client import qdrant_manager
+from app.error_handlers import setup_error_handlers
+from app.middleware import RequestTrackingMiddleware, MetricsMiddleware
+from app.logging_config import setup_logging
 
-# Configure logging
-logging.basicConfig(
-    level=getattr(logging, settings.LOG_LEVEL),
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+# Configure logging with JSON formatting and sensitive data filtering
+setup_logging(
+    log_level=settings.LOG_LEVEL,
+    use_json=(settings.ENVIRONMENT == "production"),
+    filter_sensitive=True
 )
 logger = logging.getLogger(__name__)
 
@@ -70,6 +74,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Add custom middleware
+app.add_middleware(RequestTrackingMiddleware)
+app.add_middleware(MetricsMiddleware, metrics_enabled=settings.ENABLE_METRICS)
+
+# Setup error handlers
+setup_error_handlers(app)
+
 
 @app.get("/")
 async def root():
@@ -93,14 +104,14 @@ async def health_check():
 
 
 # Import and include routers
-from app.routers import posts
+from app.routers import posts, federation, interactions, users, moderation, feed, monitoring
 app.include_router(posts.router)
-
-# Additional routers will be added as we implement them
-# from app.routers import users, feed, federation
-# app.include_router(users.router)
-# app.include_router(feed.router)
-# app.include_router(federation.router)
+app.include_router(federation.router)
+app.include_router(interactions.router)
+app.include_router(users.router)
+app.include_router(moderation.router)
+app.include_router(feed.router)
+app.include_router(monitoring.router)
 
 
 if __name__ == "__main__":
