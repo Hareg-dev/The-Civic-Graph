@@ -7,8 +7,8 @@ A decentralized video platform with ActivityPub federation, AI recommendations, 
 ### Development
 ```bash
 # Start all services
-./scripts/start_services.sh  # Linux/Mac
-scripts\start_services.bat   # Windows
+cd deployment
+docker-compose up -d
 
 # Access at http://localhost:8000
 # API docs at http://localhost:8000/docs
@@ -17,8 +17,8 @@ scripts\start_services.bat   # Windows
 ### Production
 ```bash
 # Start production stack
-./scripts/start_production.sh  # Linux/Mac
-scripts\start_production.bat   # Windows
+cd deployment
+docker-compose -f docker-compose.prod.yml up -d
 
 # Access at http://localhost
 ```
@@ -43,11 +43,18 @@ fastapi/
 │   ├── workers/      # Background tasks
 │   ├── ai/           # AI/ML components
 │   └── federation/   # ActivityPub
-├── scripts/          # Deployment & utility scripts
+├── deployment/       # Docker & deployment configs
+│   ├── Dockerfile
+│   ├── Dockerfile.dev
+│   ├── Dockerfile.prod
+│   ├── docker-compose.yml
+│   ├── docker-compose.prod.yml
+│   ├── nginx.conf
+│   └── gunicorn.conf.py
+├── scripts/          # Utility scripts
 ├── tests/            # Test files
 ├── docs/             # Documentation
-├── alembic/          # Database migrations
-└── docker-compose.yml
+└── alembic/          # Database migrations
 ```
 
 ## Documentation

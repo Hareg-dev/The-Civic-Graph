@@ -57,17 +57,17 @@ services:
 
   app:
     build:
-      context: .
-      dockerfile: Dockerfile.prod
+      context: ..
+      dockerfile: deployment/Dockerfile.prod
     container_name: freewill_app_prod
-    command: gunicorn app.main:app -c gunicorn.conf.py
+    command: gunicorn app.main:app -c deployment/gunicorn.conf.py
     expose:
       - "8000"
     volumes:
-      - ./uploads:/app/uploads
-      - ./processed:/app/processed
-      - ./federated:/app/federated
-      - ./logs:/app/logs
+      - ../uploads:/app/uploads
+      - ../processed:/app/processed
+      - ../federated:/app/federated
+      - ../logs:/app/logs
     environment:
       - ENVIRONMENT=production
       - DEBUG=false
@@ -97,15 +97,15 @@ services:
 
   worker:
     build:
-      context: .
-      dockerfile: Dockerfile.prod
+      context: ..
+      dockerfile: deployment/Dockerfile.prod
     container_name: freewill_worker_prod
     command: celery -A app.workers.tasks worker --loglevel=info --concurrency=${WORKER_CONCURRENCY:-4}
     volumes:
-      - ./uploads:/app/uploads
-      - ./processed:/app/processed
-      - ./federated:/app/federated
-      - ./logs:/app/logs
+      - ../uploads:/app/uploads
+      - ../processed:/app/processed
+      - ../federated:/app/federated
+      - ../logs:/app/logs
     environment:
       - ENVIRONMENT=production
       - DEBUG=false
@@ -133,9 +133,9 @@ services:
       - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./processed:/app/processed:ro
-      - ./static:/app/static:ro
-      - ./logs/nginx:/var/log/nginx
+      - ../processed:/app/processed:ro
+      - ../static:/app/static:ro
+      - ../logs/nginx:/var/log/nginx
       - nginx_cache:/var/cache/nginx
       # Uncomment for SSL
       # - ./ssl:/etc/nginx/ssl:ro

@@ -9,6 +9,9 @@ if ! docker info > /dev/null 2>&1; then
     exit 1
 fi
 
+# Navigate to deployment directory
+cd "$(dirname "$0")/../deployment" || exit 1
+
 # Stop any existing containers
 echo "Stopping existing containers..."
 docker-compose down

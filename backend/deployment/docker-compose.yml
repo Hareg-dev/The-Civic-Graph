@@ -47,17 +47,17 @@ services:
 
   app:
     build:
-      context: .
-      dockerfile: Dockerfile.dev  # Use fast dev build
+      context: ..
+      dockerfile: deployment/Dockerfile.dev  # Use fast dev build
     container_name: freewill_app
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     ports:
       - "8000:8000"
     volumes:
-      - .:/app
-      - ./uploads:/app/uploads
-      - ./processed:/app/processed
-      - ./federated:/app/federated
+      - ..:/app
+      - ../uploads:/app/uploads
+      - ../processed:/app/processed
+      - ../federated:/app/federated
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/freewill
       - REDIS_URL=redis://redis:6379/0
@@ -72,14 +72,16 @@ services:
         condition: service_healthy
 
   worker:
-    build: .
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile.dev
     container_name: freewill_worker
     command: celery -A app.workers.tasks worker --loglevel=info
     volumes:
-      - .:/app
-      - ./uploads:/app/uploads
-      - ./processed:/app/processed
-      - ./federated:/app/federated
+      - ..:/app
+      - ../uploads:/app/uploads
+      - ../processed:/app/processed
+      - ../federated:/app/federated
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/freewill
       - REDIS_URL=redis://redis:6379/0
